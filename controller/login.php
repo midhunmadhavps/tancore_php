@@ -40,9 +40,9 @@ try {
     }
 
     /* ---------- Login Success ---------- */
-    // 🔐 Secure session
+    // Secure session
     session_regenerate_id(true);
-    // ✅ Set session variables
+    // Set session variables
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['username'] = $user['username'];
     $_SESSION['logged_in'] = true;
