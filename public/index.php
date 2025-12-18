@@ -1,3 +1,6 @@
+<?php
+    require_once "../config/csrf.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
     
@@ -8,12 +11,14 @@
         <meta name="description" content="Tanore" />
         <meta name="author" content="itgeeksin.com" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
         <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
         <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
         <link href="main.css" rel="stylesheet">
         <link href="assets/plugin/switcher/css/switcher.css" rel="stylesheet">
         <link href="assets/css/color.css" rel="stylesheet" id="colors">
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css"> -->
     </head>
     <body>
         <header>
@@ -502,6 +507,9 @@
                     type: "GET",         
                     dataType: "json",
                     data: data,
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+                    },
                     success: function (response) {
 
                         if (response.value === true) {
@@ -534,7 +542,7 @@
                                                     <h4 class="theme-headdings text-center pad-top10">
                                                         <a>${product.product_name}</a></h4>
                                                     <p>₹${Number(product.product_price).toLocaleString("en-IN")}</p>
-                                                    <a id="cartClick" data-id="${product.product_id}" class="addtoCart itg-button">Add to Cart</a>
+                                                    <a data-id="${product.product_id}" class="addtoCart itg-button">Add to Cart</a>
                                                 </figcaption>
                                             </figure>
                                         </div>

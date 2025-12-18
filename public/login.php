@@ -1,6 +1,6 @@
 
 <?php
-    require_once "../config/session.php";
+    require_once "../config/csrf.php";
 
     if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         header("Location: /tanore/public/addProduct.php");
@@ -18,6 +18,7 @@
     <meta name="description" content="Tanore" />
     <meta name="author" content="itgeeksin.com" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
     <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
     <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
     <link href="main.css" rel="stylesheet">
@@ -25,6 +26,7 @@
     <link href="assets/css/color.css" rel="stylesheet" id="colors">
     <link href="assets/css/login.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css"> -->
 </head>
 <body>
 
@@ -305,6 +307,9 @@
                         password: password
                     },
                     dataType: "json",
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+                    },
                     success: function (response) {
                         if (response.value === true) {
                             showSuccess(response.message);

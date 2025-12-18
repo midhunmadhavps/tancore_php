@@ -1,12 +1,11 @@
 <?php
-    // include "../config/db.php";
-    // include "../helpers/product_helper.php";
-    require_once "../config/session.php";
+    require_once "../config/csrf.php";
 
     if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         header("Location: /tanore/public/login.php");
         exit;
     }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +17,7 @@
     <meta name="description" content="Tanore" />
     <meta name="author" content="itgeeksin.com" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
     <link rel="shortcut icon" href="./assets/img/favicon.ico" type="image/x-icon">
     <link rel="icon" href="./assets/img/favicon.ico" type="image/x-icon">
     <link href="main.css" rel="stylesheet">
@@ -25,6 +25,7 @@
     <link href="./assets/css/color.css" rel="stylesheet" id="colors">
     <link href="./assets/css/login.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css"> -->
 </head>
 
 
@@ -378,8 +379,13 @@
                 url: "/tanore/controller/logout.php",
                 type: "POST",
                 dataType: "json",
-                success: function () {
-                    window.location.href = "/tanore/public/login.php";
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    if (response.value === true) {
+                        window.location.href = "/tanore/public/login.php";
+                    }
                 }
             });
         });
@@ -408,6 +414,9 @@
                 url: "/tanore/controller/get-category.php",
                 type: "GET",         
                 dataType: "json",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function (response) {
 
                     if (response.value === true) {
@@ -451,6 +460,9 @@
                 processData: false,
                 contentType: false,
                 dataType: "json",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function (response) {
 
                     if (response.data === true) {
@@ -497,11 +509,13 @@
         }
 
         function loadProducts() {
-            console.log("ssss");
             $.ajax({
                 url: "/tanore/controller/get-products.php",
                 type: "GET",         
                 dataType: "json",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function (response) {
 
                     if (response.value === true) {
@@ -607,6 +621,9 @@
                 processData: false,
                 contentType: false,
                 dataType: "json",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function (response) {
 
                     if (response.value === true) {

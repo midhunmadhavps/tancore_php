@@ -1,29 +1,28 @@
 <?php
 header("Content-Type: application/json");
+require_once "../config/db.php";
+require_once "../middleware/verify_csrf.php";
 
-// --- DB CONNECTION ---
-require_once "../config/db.php";   // <-- your PDO connection
 
-// --- VALIDATION ---
-if (!isset($_POST['name']) || empty(trim($_POST['name']))) {
-    echo json_encode(["data" => false, "message" => "Product name is required"]);
-    exit;
-}
+    if (!isset($_POST['name']) || empty(trim($_POST['name']))) {
+        echo json_encode(["data" => false, "message" => "Product name is required"]);
+        exit;
+    }
 
-if (!isset($_POST['price']) || floatval($_POST['price']) <= 0) {
-    echo json_encode(["data" => false, "message" => "Invalid price"]);
-    exit;
-}
+    if (!isset($_POST['price']) || floatval($_POST['price']) <= 0) {
+        echo json_encode(["data" => false, "message" => "Invalid price"]);
+        exit;
+    }
 
-if (empty($_FILES['image']['name'][0])) {
-    echo json_encode(["data" => false, "message" => "Please upload at least one image"]);
-    exit;
-}
+    if (empty($_FILES['image']['name'][0])) {
+        echo json_encode(["data" => false, "message" => "Please upload at least one image"]);
+        exit;
+    }
 
-$name        = trim($_POST['name']);
-$price       = floatval($_POST['price']);
-$category_id = intval($_POST['category']);
-$description = trim($_POST['description'] ?? "");
+    $name        = trim($_POST['name']);
+    $price       = floatval($_POST['price']);
+    $category_id = intval($_POST['category']);
+    $description = trim($_POST['description'] ?? "");
 
 try {
     // --- START TRANSACTION ---

@@ -1,3 +1,6 @@
+<?php
+    require_once "../config/csrf.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
    
@@ -8,6 +11,7 @@
         <meta name="description" content="Jewellery" />
         <meta name="author" content="itgeeksin.com" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
         <title>Tanore</title>
         <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
         <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
@@ -15,6 +19,7 @@
         <link href="assets/plugin/switcher/css/switcher.css" rel="stylesheet">
         <link href="assets/css/color.css" rel="stylesheet" id="colors">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css"> -->
     </head>
    <body>
 
@@ -400,6 +405,9 @@
                 type: "GET",         
                 dataType: "json",
                 data: datas,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+                },
                     success: function (response) {
                         if (response.data && response.data.length > 0) {
                             const products = response.data;

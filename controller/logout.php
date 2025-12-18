@@ -1,25 +1,27 @@
 <?php
-require_once "../config/session.php";
+header("Content-Type: application/json");
 
-// Unset all session variables
+require_once "../middleware/verify_csrf.php";
+
 $_SESSION = [];
 
-// Destroy session
-session_destroy();
-
-// Delete session cookie (important)
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
     setcookie(
         session_name(),
         '',
         time() - 42000,
-        $params["path"],
-        $params["domain"],
-        $params["secure"],
-        $params["httponly"]
+        $params['path'],
+        $params['domain'],
+        $params['secure'],
+        $params['httponly']
     );
 }
+
+session_destroy();
+
+session_start();
+session_regenerate_id(true);
 
 echo json_encode([
     "value" => true,

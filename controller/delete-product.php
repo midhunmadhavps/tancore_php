@@ -1,6 +1,7 @@
 <?php
 header("Content-Type: application/json");
 require_once "../config/db.php";
+require_once "../middleware/verify_csrf.php";
 
 try {
     if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
