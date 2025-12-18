@@ -1,3 +1,4 @@
 cmd : composer require vlucas/phpdotenv
 PHP 8.2.12
 Composer version 2.8.9 2025-05-13 14:01:37
+tanore\controller\create_user.php renaame the user name and password , delete if after run
