@@ -197,6 +197,7 @@
 
                                             </div>
                                         </div>
+                                        <div id="pagination" class="text-center mt-4"></div>
                                     </div>
 
                                     <div class="col-md-3 col-sm-4 col-xs-12 siad-bar-sec ">
@@ -379,6 +380,36 @@
 
     <script>
 
+        let currentPage = 1;
+        const perPage = 2;
+        let category_ids;
+        let min_price;
+        let max_price;
+
+
+        function updateFilters() {
+            const selectedCategories = Array.from(
+                document.querySelectorAll('input[type="checkbox"]:checked')
+            ).map(cb => cb.value);
+
+            category_ids = selectedCategories.join(",");
+            if ($("#slider-range").hasClass("ui-slider")) {
+                min_price = $("#slider-range").slider("values", 0);
+                max_price = $("#slider-range").slider("values", 1);
+            } else {
+                min_price = 0;
+                max_price = 0;
+            }
+        }
+
+        $(document).ready(function () {
+            rangSliderint();
+            updateFilters();
+            loadProducts();
+            loadCategories();
+        });
+
+            
 
         $(document).on("click", ".addtoCart", function (e) {
             e.preventDefault();
@@ -397,27 +428,19 @@
 
         $(document).on("click", "#filter", function (e) {
             e.preventDefault();
-
-           const selectedCategories = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
-                                        .map(cb => cb.value); // array of IDs
-
-            // If you want min and max separately
-            const minPrice = $("#slider-range").slider("values", 0);
-            const maxPrice = $("#slider-range").slider("values", 1);
-
-            console.log("Min:", minPrice, "Max:", maxPrice);
-
-            const data = {
-                category_ids: selectedCategories.join(","),
-                min_price: minPrice,
-                max_price: maxPrice
-            };
-
-            loadProducts(data);
-
+            currentPage = 1;
+            loadProducts();
         });
 
         function loadProducts(data = {}) {
+
+            data.page = currentPage;
+            data.per_page = perPage;
+
+            updateFilters();
+            data.category_ids = category_ids;
+            data.min_price = min_price;
+            data.max_price = max_price;
 
             $.ajax({
                 url: "/tanore/controller/get-products.php",
@@ -434,6 +457,12 @@
                         const products = response.data;
                         const container = document.getElementById("productsgriads");
                         container.innerHTML = "";
+
+                        if (!products || products.length === 0) {
+                            container.innerHTML = `<div class="col-12 text-center">Out of stock!</div>`;
+                            return;
+                        }
+                        
                         if (!products || products.length === 0) {
                             const cardHTML = `
                                 <div class="col-md-12 col-sm-12 col-xs-12 product_itm no-data">
@@ -506,6 +535,8 @@
                             navText: [prevNav, nextNav]
                         });
 
+                        renderPagination(response.pagination);
+
                         return;
                     }
 
@@ -520,6 +551,77 @@
                     Swal.fire("Error", "Server error", "error");
                 }
             });
+
+            function renderPagination(pagination) {
+
+                const container = document.getElementById("pagination");
+                container.innerHTML = "";
+
+                const totalPages = pagination.total_pages;
+                const current = pagination.current_page;
+                const maxButtons = 3;
+
+                let startPage, endPage;
+
+                if (totalPages <= maxButtons) {
+                    // Few pages → show all
+                    startPage = 1;
+                    endPage = totalPages;
+                } else {
+                    // Sliding window
+                    if (current === 1) {
+                        startPage = 1;
+                        endPage = maxButtons;
+                    } else if (current === totalPages) {
+                        startPage = totalPages - (maxButtons - 1);
+                        endPage = totalPages;
+                    } else {
+                        startPage = current - 1;
+                        endPage = current + 1;
+                    }
+
+                    // Safety clamp
+                    if (startPage < 1) startPage = 1;
+                    if (endPage > totalPages) endPage = totalPages;
+                }
+
+                /* Previous button */
+                if (current > 1) {
+                    container.innerHTML += `
+                        <button class="btn btn-sm btn-outline-primary"
+                            onclick="changePage(${current - 1})">
+                            «
+                        </button>
+                    `;
+                }
+
+                /* Page numbers */
+                for (let i = startPage; i <= endPage; i++) {
+                    container.innerHTML += `
+                        <button
+                            class="btn btn-sm ${i === current ? 'btn-primary active' : 'btn-outline-primary'}"
+                            onclick="changePage(${i})">
+                            ${i}
+                        </button>
+                    `;
+                }
+
+                /* Next button */
+                if (current < totalPages) {
+                    container.innerHTML += `
+                        <button class="btn btn-sm btn-outline-primary"
+                            onclick="changePage(${current + 1})">
+                            »
+                        </button>
+                    `;
+                }
+            }
+
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            loadProducts();
         }
 
         function loadCategories() {
@@ -567,9 +669,6 @@
                 }
             });
         }
-
-        loadProducts();
-        loadCategories();
 
 
     </script>

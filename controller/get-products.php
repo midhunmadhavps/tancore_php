@@ -4,12 +4,53 @@ require_once "../config/db.php";
 require_once "../middleware/verify_csrf.php";
 
 try {
-    // Read AJAX values safely
+
+    // Filters
     $categoryIds = $_GET['category_ids'] ?? '';
     $minPrice    = $_GET['min_price'] ?? '';
     $maxPrice    = $_GET['max_price'] ?? '';
 
-    // Base query
+    // Pagination
+    $page     = max(1, (int)($_GET['page'] ?? 1));
+    $perPage  = max(1, (int)($_GET['per_page'] ?? 9));
+    $offset   = ($page - 1) * $perPage;
+
+    /* =========================
+       1️⃣ COUNT QUERY
+    ========================= */
+    $countSql = "
+        SELECT COUNT(DISTINCT p.id)
+        FROM t_products p
+        WHERE 1=1
+    ";
+
+    $countParams = [];
+
+    if (!empty($categoryIds)) {
+        $ids = array_map('intval', explode(",", $categoryIds));
+        $placeholders = implode(",", array_fill(0, count($ids), "?"));
+        $countSql .= " AND p.category_id IN ($placeholders)";
+        $countParams = array_merge($countParams, $ids);
+    }
+
+    if ($minPrice !== '') {
+        $countSql .= " AND p.product_price >= ?";
+        $countParams[] = $minPrice;
+    }
+
+    if ($maxPrice !== '') {
+        $countSql .= " AND p.product_price <= ?";
+        $countParams[] = $maxPrice;
+    }
+
+    $countStmt = $pdo->prepare($countSql);
+    $countStmt->execute($countParams);
+    $totalProducts = (int) $countStmt->fetchColumn();
+    $totalPages = ceil($totalProducts / $perPage);
+
+    /* =========================
+       2️⃣ DATA QUERY
+    ========================= */
     $sql = "
         SELECT 
             p.id AS product_id,
@@ -26,15 +67,13 @@ try {
 
     $params = [];
 
-    // Filter by category IDs
     if (!empty($categoryIds)) {
-        $ids = explode(",", $categoryIds);
+        $ids = array_map('intval', explode(",", $categoryIds));
         $placeholders = implode(",", array_fill(0, count($ids), "?"));
         $sql .= " AND p.category_id IN ($placeholders)";
         $params = array_merge($params, $ids);
     }
 
-    // Filter by price range
     if ($minPrice !== '') {
         $sql .= " AND p.product_price >= ?";
         $params[] = $minPrice;
@@ -48,21 +87,31 @@ try {
     $sql .= "
         GROUP BY p.id
         ORDER BY p.id DESC
+        LIMIT $perPage OFFSET $offset
     ";
+
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
-
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    /* =========================
+       RESPONSE
+    ========================= */
     echo json_encode([
         "value" => true,
-        "data" => $products
+        "data" => $products,
+        "pagination" => [
+            "current_page" => $page,
+            "per_page"     => $perPage,
+            "total_pages"  => $totalPages,
+            "total_items"  => $totalProducts
+        ]
     ]);
-
     exit;
 
 } catch (Exception $e) {
+    http_response_code(500);
     echo json_encode([
         "value" => false,
         "message" => $e->getMessage()

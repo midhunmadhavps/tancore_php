@@ -197,6 +197,7 @@
 
                                                 </div>
                                             </div>
+                                            <div id="pagination" class="text-center mt-4"></div>
                                         </div>
 
                                       
@@ -338,12 +339,9 @@
     <script src="./assets/js/nodemain.js"></script>
     <script>
 
-        /**
-            const token = sessionStorage.getItem("token");
-            if (!token) {
-                window.location.href = "/login.html";
-            }
-        */
+        let currentPage = 1;
+        const perPage = 2;
+
         $(document).ready(function () {
             loadProducts();
             loadCategories();
@@ -508,11 +506,16 @@
             document.getElementById("emptyState").style.display = "block";
         }
 
-        function loadProducts() {
+        function loadProducts(data = {}) {
+
+            data.page = currentPage;
+            data.per_page = perPage;
+
             $.ajax({
                 url: "/tanore/controller/get-products.php",
                 type: "GET",         
                 dataType: "json",
+                data: data,
                 headers: {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
                 },
@@ -523,6 +526,12 @@
                         console.log("products",products);
                         const container = document.getElementById("productsgriads");
                         container.innerHTML = "";
+
+                        if (!products || products.length === 0) {
+                            container.innerHTML = `<div class="col-12 text-center">Out of stock!</div>`;
+                            return;
+                        }
+
                         if (!products || products.length === 0) {
                             const cardHTML = `
                                 <div class="col-md-12 col-sm-12 col-xs-12 product_itm no-data">
@@ -594,6 +603,9 @@
                             items: 1,
                             navText: [prevNav, nextNav]
                         });
+
+                        renderPagination(response.pagination)
+
                         return;
                     }
 
@@ -608,6 +620,76 @@
                     Swal.fire("Error", "Server error", "error");
                 }
             });
+
+            function renderPagination(pagination) {
+
+                const container = document.getElementById("pagination");
+                container.innerHTML = "";
+
+                const totalPages = pagination.total_pages;
+                const current = pagination.current_page;
+                const maxButtons = 3;
+
+                let startPage, endPage;
+
+                if (totalPages <= maxButtons) {
+                    // Few pages → show all
+                    startPage = 1;
+                    endPage = totalPages;
+                } else {
+                    // Sliding window
+                    if (current === 1) {
+                        startPage = 1;
+                        endPage = maxButtons;
+                    } else if (current === totalPages) {
+                        startPage = totalPages - (maxButtons - 1);
+                        endPage = totalPages;
+                    } else {
+                        startPage = current - 1;
+                        endPage = current + 1;
+                    }
+
+                    // Safety clamp
+                    if (startPage < 1) startPage = 1;
+                    if (endPage > totalPages) endPage = totalPages;
+                }
+
+                /* Previous button */
+                if (current > 1) {
+                    container.innerHTML += `
+                        <button class="btn btn-sm btn-outline-primary"
+                            onclick="changePage(${current - 1})">
+                            «
+                        </button>
+                    `;
+                }
+
+                /* Page numbers */
+                for (let i = startPage; i <= endPage; i++) {
+                    container.innerHTML += `
+                        <button
+                            class="btn btn-sm ${i === current ? 'btn-primary active' : 'btn-outline-primary'}"
+                            onclick="changePage(${i})">
+                            ${i}
+                        </button>
+                    `;
+                }
+
+                /* Next button */
+                if (current < totalPages) {
+                    container.innerHTML += `
+                        <button class="btn btn-sm btn-outline-primary"
+                            onclick="changePage(${current + 1})">
+                            »
+                        </button>
+                    `;
+                }
+            }
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            loadProducts();
         }
 
         function deleteProduct(productId, element) {

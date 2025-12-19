@@ -203,7 +203,7 @@ function rangSliderint() {
         range: true,
         min: 0,
         max: 5000,
-        values: [100, 1000],
+        values: [0, 5000],
         slide: function(event, ui) {
             $("#amount").val("₹" + ui.values[0] + " - ₹" + ui.values[1]);
         }
