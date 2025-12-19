@@ -528,17 +528,13 @@
                         container.innerHTML = "";
 
                         if (!products || products.length === 0) {
-                            container.innerHTML = `<div class="col-12 text-center">Out of stock!</div>`;
-                            return;
-                        }
-
-                        if (!products || products.length === 0) {
                             const cardHTML = `
                                 <div class="col-md-12 col-sm-12 col-xs-12 product_itm no-data">
                                     Out of stock!
                                 </div>
                             `;
                             container.innerHTML = cardHTML;
+                            $('#pagination').hide();
                             return; // stop here
                         }
 
@@ -608,12 +604,6 @@
 
                         return;
                     }
-
-                    Swal.fire({
-                        icon: "error",
-                        title: "Failed!",
-                        text: response.message || "Something went wrong!"
-                    });
                 },
                 error: function (xhr) {
                      console.error(xhr.responseText);

@@ -9,6 +9,7 @@ try {
     $categoryIds = $_GET['category_ids'] ?? '';
     $minPrice    = $_GET['min_price'] ?? '';
     $maxPrice    = $_GET['max_price'] ?? '';
+    $search    = $_GET['search'] ?? '';
 
     // Pagination
     $page     = max(1, (int)($_GET['page'] ?? 1));
@@ -41,6 +42,11 @@ try {
     if ($maxPrice !== '') {
         $countSql .= " AND p.product_price <= ?";
         $countParams[] = $maxPrice;
+    }
+
+    if ($search !== '') {
+        $countSql .= " AND p.product_name LIKE ?";
+        $countParams[] = "%" . $search;
     }
 
     $countStmt = $pdo->prepare($countSql);
@@ -82,6 +88,11 @@ try {
     if ($maxPrice !== '') {
         $sql .= " AND p.product_price <= ?";
         $params[] = $maxPrice;
+    }
+
+    if ($search !== '') {
+        $sql .= " AND p.product_name LIKE ?";
+        $params[] = "%" . $search;
     }
 
     $sql .= "

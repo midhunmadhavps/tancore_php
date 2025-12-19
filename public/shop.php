@@ -21,7 +21,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- <link rel="stylesheet" href="./assets/font-awesome/css/font-awesome.min.css"> -->
     <style>
-        
+        .search_terms {
+            width: 100% !important;
+            padding: 10px !important;
+            border: 1px solid #ccc !important;
+        }
+
     </style>
 </head>
 
@@ -192,6 +197,19 @@
                                 <div id="collectiongrid">
 
                                     <div class="col-md-9 col-sm-8 col-xs-12 pull-right">
+                                        <div class="input-group">
+                                            <input type="text" 
+                                                id="search" 
+                                                name="search" 
+                                                class="form-control search_terms" 
+                                                placeholder="Search products...">
+
+                                            <span class="input-group-btn">
+                                                <button id="searchBtn" class="btn btn-primary" type="button">
+                                                    Search
+                                                </button>
+                                            </span>
+                                        </div>
                                         <div class="row">
                                             <div id="productsgriads" class="products mar-top30" style="display: block;">
 
@@ -432,6 +450,15 @@
             loadProducts();
         });
 
+        $(document).on("click", "#searchBtn", function (e) {
+            e.preventDefault();
+            currentPage = 1;
+            data = {
+                search: $("#search").val()
+            }
+            loadProducts(data);
+        });
+
         function loadProducts(data = {}) {
 
             data.page = currentPage;
@@ -459,17 +486,13 @@
                         container.innerHTML = "";
 
                         if (!products || products.length === 0) {
-                            container.innerHTML = `<div class="col-12 text-center">Out of stock!</div>`;
-                            return;
-                        }
-                        
-                        if (!products || products.length === 0) {
                             const cardHTML = `
                                 <div class="col-md-12 col-sm-12 col-xs-12 product_itm no-data">
                                     Out of stock!
                                 </div>
                             `;
                             container.innerHTML = cardHTML;
+                            $('#pagination').hide();
                             return; // stop here
                         }
 
@@ -540,11 +563,6 @@
                         return;
                     }
 
-                    Swal.fire({
-                        icon: "error",
-                        title: "Failed!",
-                        text: response.message || "Something went wrong!"
-                    });
                 },
                 error: function (xhr) {
                      console.error(xhr.responseText);
