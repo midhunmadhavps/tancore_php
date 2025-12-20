@@ -399,7 +399,7 @@
     <script>
 
         let currentPage = 1;
-        const perPage = 2;
+        const perPage = 9;
         let category_ids;
         let min_price;
         let max_price;
@@ -526,16 +526,15 @@
                                             </div>
 
                                             <figcaption class="figure-boxx figure-section-hover">
-                                                <h4 class="theme-headdings text-center pad-top10">
-                                                    <a href="#">${product.product_name}</a>
-                                                </h4>
-
-                                                <div class="star-box-section text-left">
+                                                <div class="star-box-section text-center">
+                                                    <h4 class="theme-headdings text-center pad-top10">
+                                                        <a>${product.product_name}</a>
+                                                    </h4>
                                                     <p>${description}</p>
+                                                    <p>₹${Number(product.product_price).toLocaleString("en-IN")}</p>
+                                                    <a data-id="${product.product_id}" class="addtoCart itg-button">Add to Cart</a>
                                                 </div>
-
-                                                <p>₹${Number(product.product_price).toLocaleString("en-IN")}</p>
-                                                <a data-id="${product.product_id}" class="addtoCart itg-button">Add to Cart</a>
+                                                
                                             </figcaption>
                                         </div>
                                     </div>

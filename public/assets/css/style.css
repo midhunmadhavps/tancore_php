@@ -3347,3 +3347,6 @@ div#productslist {
     right: 0;
     bottom: 1rem;
 }
+#slider-range{
+    width: calc(100% - 20px) !important;
+}

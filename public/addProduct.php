@@ -340,7 +340,7 @@
     <script>
 
         let currentPage = 1;
-        const perPage = 2;
+        const perPage = 24;
 
         $(document).ready(function () {
             loadProducts();
@@ -572,9 +572,9 @@
                                                     <a href="#">${product.product_name}</a>
                                                 </h4>
 
-                                                <div class="star-box-section text-left">
+                                                <div class="star-box-section text-center">
                                                     <p>${description}</p>
-                                                    <i class="fa fa-trash" data-id="${product.product_id}" id="deleteProduct"></i>
+                                                    <span><i class="fa fa-trash" data-id="${product.product_id}" id="deleteProduct"></i></span>
                                                 </div>
 
                                                 <p>₹${Number(product.product_price).toLocaleString("en-IN")}</p>
