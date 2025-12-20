@@ -43,8 +43,23 @@ try {
 
     $product_id = $pdo->lastInsertId();
 
-    // --- HANDLE FILE UPLOAD ---
-    $uploadDir = "../uploads/";
+   $uploadDir = realpath(__DIR__ . "/../uploads");
+
+    if ($uploadDir === false || !is_dir($uploadDir)) {
+        echo json_encode([
+            "data" => false,
+            "message" => "Uploads directory not found"
+        ]);
+        exit;
+    }
+
+    if (!is_writable($uploadDir)) {
+        echo json_encode([
+            "data" => false,
+            "message" => "Uploads directory is not writable"
+        ]);
+        exit;
+    }
 
     // Normalize files array
     $images = $_FILES['image'];
@@ -59,17 +74,21 @@ try {
             'size'     => [$images['size']],
         ];
     }
-
+    $uploadDir .= DIRECTORY_SEPARATOR;
     foreach ($images['tmp_name'] as $key => $tmp_name) {
 
         if ($images['error'][$key] !== UPLOAD_ERR_OK) {
             continue;
         }
 
-        $fileName = time() . "_" . basename($images['name'][$key]);
+        $ext = strtolower(pathinfo($images['name'][$key], PATHINFO_EXTENSION));
+        $fileName = uniqid("img_", true) . "." . $ext;
         $filePath = $uploadDir . $fileName;
 
-        move_uploaded_file($tmp_name, $filePath);
+        if (!move_uploaded_file($tmp_name, $filePath)) {
+            echo json_encode(["data" => false, "message" => "Image upload failed"]);
+            exit;
+        }
 
         $img = $pdo->prepare("
             INSERT INTO t_images (product_id, image_name)

@@ -26,6 +26,9 @@
     <link href="./assets/css/login.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css"> -->
+    <style>
+        .pointer {cursor: pointer;}
+    </style>
 </head>
 
 
@@ -574,7 +577,7 @@
 
                                                 <div class="star-box-section text-center">
                                                     <p>${description}</p>
-                                                    <span><i class="fa fa-trash" data-id="${product.product_id}" id="deleteProduct"></i></span>
+                                                    <span><i class="fa fa-trash pointer" data-id="${product.product_id}" id="deleteProduct"></i></span>
                                                 </div>
 
                                                 <p>₹${Number(product.product_price).toLocaleString("en-IN")}</p>
