@@ -3350,3 +3350,15 @@ div#productslist {
 #slider-range{
     width: calc(100% - 20px) !important;
 }
+.products img{
+    height: 365px!important;
+    object-fit: cover!important;
+}
+.btn-primary,
+.btn-primary.active, 
+.btn-primary:active,
+ .open>.dropdown-toggle.btn-primary {
+    color: #fff!important;
+    background-color: #bfa38b!important;
+    border-color: #bfa38b!important;
+}

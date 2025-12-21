@@ -347,7 +347,7 @@
                     message += `• ${name}\n   Qty: ${qty}\n   Price: ₹${parseInt(priceText).toLocaleString("en-IN")}\n   Total: ₹${total.toLocaleString("en-IN")}\n\n`;
                 });
                 // Redirect to WhatsApp
-                const whatsappUrl = "https://wa.me/9567223061?text=" + encodeURIComponent(message);
+                const whatsappUrl = "https://wa.me/9746006061?text=" + encodeURIComponent(message);
                 window.location.href = whatsappUrl;
             });
 
