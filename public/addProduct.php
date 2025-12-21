@@ -176,7 +176,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
 
                     <div class="tab pad-bottom40">
-                        <button class="tablinks active" data-id="allProducts">All Products</button>
+                        <button class="tablinks active" id="add-products" data-id="allProducts">All Products</button>
 
                         <button class="tablinks" data-id="shippingDetail">Add Products</button>
 
@@ -408,6 +408,12 @@
                     deleteProduct(productId, element); 
                 }
             });
+        });
+
+        $(document).on("click", "#add-products", function (e) {
+            e.preventDefault();
+            currentPage = 1;
+            loadProducts();
         });
 
         function loadCategories() {
