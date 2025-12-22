@@ -2,14 +2,9 @@
 require_once __DIR__ . "/../config/session.php";
 require_once __DIR__ . "/../config/csrf.php";
 
-$headers = function_exists('getallheaders') ? getallheaders() : $_SERVER;
+$token = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
 
-$token = $headers['X-CSRF-TOKEN']
-    ?? $headers['HTTP_X_CSRF_TOKEN']
-    ?? $_POST['_csrf']
-    ?? '';
-
-if (!$token || $token !== $_SESSION['csrf_token']) {
+if (!$token || !hash_equals($_SESSION['csrf_token'], $token)) {
     http_response_code(403);
     echo json_encode([
         "value" => false,
