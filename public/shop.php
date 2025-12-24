@@ -472,7 +472,7 @@
             if (categoryFromURL) {
                 const urlParams = new URLSearchParams(window.location.search);
                 categoryNames = urlParams.get('category');
-                categoryFromURL = false; // 🔥 STOP re-reading
+                categoryFromURL = false;
             }
 
             if(categoryNames){
