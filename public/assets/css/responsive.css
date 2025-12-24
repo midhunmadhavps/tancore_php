@@ -21,6 +21,23 @@
 .mob{
     display: none;
 }
+.blog-griad .text-c.order-data h4 {
+        text-align: center;
+        text-transform: capitalize;
+        font-weight: 400;
+        margin-top: 0px;
+        font-size: 13px;
+    }
+
+   .blog-griad .product-order-table h4 {
+        line-height: 1.6em;
+        text-align: center;
+        font-size: 15px;
+    }
+
+    .product-order-table .product_name {
+        text-align: center;
+    }
     .navbar-collapse {
 
         height: auto;
