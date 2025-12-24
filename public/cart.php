@@ -182,7 +182,7 @@
 
                         <div class="clear"></div>
 
-                        <div class=" hidden-xs pad-top-bottom15 order-bosx price">
+                        <div class="pad-top-bottom15 order-bosx price">
 
                             <div class=" row">
 
@@ -190,13 +190,13 @@
 
                                     <div class=" row ">
 
-                                        <div class="col-md-1 col-sm-1 col-xs-12 ">
+                                        <div class="col-md-1 col-sm-1 col-xs-1">
 
                                             <div class="text-c  order-data grey-bg text-center pad15"></div>
 
                                         </div>
 
-                                        <div class="col-md-3 col-sm-3 col-xs-12 ">
+                                        <div class="col-md-3 col-sm-3 col-xs-3">
 
                                             <div class="text-c  order-data grey-bg text-center pad15">
 
@@ -206,7 +206,7 @@
 
                                         </div>
 
-                                        <div class="col-md-2 col-sm-2 marB30 ">
+                                        <div class="col-md-2 col-sm-2 col-xs-2 marB30 ">
 
                                             <div class="text-c  order-data grey-bg text-center pad15">
 
@@ -216,7 +216,7 @@
 
                                         </div>
 
-                                        <div class="col-md-2 col-sm-2 marB30">
+                                        <div class="col-md-2 col-sm-2 col-xs-2 marB30">
 
                                             <div class="text-c  order-data grey-bg text-center pad15">
 
@@ -226,7 +226,7 @@
 
                                         </div>
 
-                                        <div class="col-md-3 col-sm-3 marB30">
+                                        <div class="col-md-3 col-sm-3 col-xs-3 marB30">
 
                                             <div class="text-c  order-data grey-bg text-center pad15">
 
@@ -236,7 +236,7 @@
 
                                         </div>
 
-                                        <div class="col-md-1 col-sm-1 marB30">
+                                        <div class="col-md-1 col-sm-1 col-xs-1 marB30">
 
                                             <div class="text-c  order-data grey-bg text-center pad15">
 
@@ -436,23 +436,23 @@
                                                 <div class="order-row padTB20">
                                                     <div class="col-md-1 col-sm-1 col-xs-1"></div>
 
-                                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                                    <div class="col-md-3 col-sm-3 col-xs-3">
                                                         <h4 class="product_name product-title"><a>${product.product_name}</a></h4>
                                                     </div>
 
-                                                    <div class="col-md-2 col-sm-2 col-xs-12">
+                                                    <div class="col-md-2 col-sm-2 col-xs-2">
                                                         <h4 class="product_price">₹${Number(product.product_price).toLocaleString("en-IN")}</h4>
                                                     </div>
 
-                                                    <div class="col-md-2 col-sm-2 col-xs-12">
+                                                    <div class="col-md-2 col-sm-2 col-xs-2">
                                                         <input type="number" value="1" class="quantity" name="quantity">
                                                     </div>
 
-                                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                                    <div class="col-md-3 col-sm-3 col-xs-2">
                                                         <h4 class="total">₹${Number(product.product_price).toLocaleString("en-IN")}</h4>
                                                     </div>
 
-                                                    <div class="col-md-1 col-sm-1 col-xs-12">
+                                                    <div class="col-md-1 col-sm-1 col-xs-1">
                                                         <i class="fa fa-trash deletefromcart" data-id="${product.id}"></i>
                                                     </div>
 

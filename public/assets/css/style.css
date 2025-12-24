@@ -3362,3 +3362,6 @@ div#productslist {
     background-color: #bfa38b!important;
     border-color: #bfa38b!important;
 }
+.mini-cart-icon i{
+color: transparent;
+}
