@@ -403,6 +403,8 @@
         let category_ids;
         let min_price;
         let max_price;
+        let categoryNames = null;
+        let categoryFromURL = true;
 
 
         function updateFilters() {
@@ -423,8 +425,8 @@
         $(document).ready(function () {
             rangSliderint();
             updateFilters();
-            loadProducts();
             loadCategories();
+            loadProducts();
         });
 
             
@@ -447,6 +449,7 @@
         $(document).on("click", "#filter", function (e) {
             e.preventDefault();
             currentPage = 1;
+            categoryNames = "";
             loadProducts();
         });
 
@@ -461,13 +464,25 @@
 
         function loadProducts(data = {}) {
 
-            data.page = currentPage;
-            data.per_page = perPage;
-
             updateFilters();
             data.category_ids = category_ids;
             data.min_price = min_price;
             data.max_price = max_price;
+
+            if (categoryFromURL) {
+                const urlParams = new URLSearchParams(window.location.search);
+                categoryNames = urlParams.get('category');
+                categoryFromURL = false; // 🔥 STOP re-reading
+            }
+
+            if(categoryNames){
+                data.categoryNames = categoryNames;
+            }else{
+                data.categoryNames = '';
+            }
+            
+            data.page = currentPage;
+            data.per_page = perPage;
 
             $.ajax({
                 url: "/tanore/controller/get-products.php",

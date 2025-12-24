@@ -10,6 +10,7 @@ try {
     $minPrice    = $_GET['min_price'] ?? '';
     $maxPrice    = $_GET['max_price'] ?? '';
     $search    = $_GET['search'] ?? '';
+    $categoryNames    = $_GET['categoryNames'] ?? '';
 
     // Pagination
     $page     = max(1, (int)($_GET['page'] ?? 1));
@@ -22,6 +23,7 @@ try {
     $countSql = "
         SELECT COUNT(DISTINCT p.id)
         FROM t_products p
+        LEFT JOIN t_category c ON p.category_id = c.id
         WHERE 1=1
     ";
 
@@ -47,6 +49,11 @@ try {
     if ($search !== '') {
         $countSql .= " AND p.product_name LIKE ?";
         $countParams[] = "%" . $search;
+    }
+
+    if ($categoryNames !== '') {
+        $countSql .= " AND c.category_name = ?";
+        $countParams[] = $categoryNames;
     }
 
     $countStmt = $pdo->prepare($countSql);
@@ -93,6 +100,11 @@ try {
     if ($search !== '') {
         $sql .= " AND p.product_name LIKE ?";
         $params[] = "%" . $search;
+    }
+
+    if ($categoryNames !== '') {
+        $sql .= " AND c.category_name = ?";
+        $params[] = $categoryNames;
     }
 
     $sql .= "

@@ -1,10 +1,11 @@
 
 
 $(document).on("click", "#shopClick", function () {
-    window.location.href = "/tanore/public/shop.php";
+    const name = $(this).data("name");
+    window.location.href = "/tanore/public/shop.php?category=" + encodeURIComponent(name);
 });
 $(document).on("click", "#homeClick", function () {
-    window.location.href = "/tanore/public/index.php";
+    window.location.href = "/";
 });
 $(document).on("click", "#cartClick", function () {
     window.location.href = "/tanore/public/cart.php";
