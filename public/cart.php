@@ -190,7 +190,7 @@
 
                                     <div class=" row ">
 
-                                        <div class="col-md-1 col-sm-1 col-xs-1">
+                                        <div class="col-md-1 col-sm-1 col-xs-1 mob">
 
                                             <div class="text-c  order-data grey-bg text-center pad15"></div>
 
@@ -434,7 +434,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="order-row padTB20">
-                                                    <div class="col-md-1 col-sm-1 col-xs-1"></div>
+                                                    <div class="col-md-1 col-sm-1 col-xs-1 mob"></div>
 
                                                     <div class="col-md-3 col-sm-3 col-xs-3">
                                                         <h4 class="product_name product-title"><a>${product.product_name}</a></h4>

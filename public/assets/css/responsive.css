@@ -17,6 +17,10 @@
 .mobile-header{
     display: none;
 }
+
+.mob{
+    display: none;
+}
     .navbar-collapse {
 
         height: auto;
