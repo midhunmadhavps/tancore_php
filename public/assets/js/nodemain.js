@@ -2,7 +2,11 @@
 
 $(document).on("click", "#shopClick", function () {
     const name = $(this).data("name");
-    window.location.href = "/tanore/public/shop.php?category=" + encodeURIComponent(name);
+    if (!name) {
+        window.location.href = "/tanore/public/shop.php";
+    }else{
+        window.location.href = "/tanore/public/shop.php?category=" + encodeURIComponent(name);
+    }
 });
 $(document).on("click", "#homeClick", function () {
     window.location.href = "/";
