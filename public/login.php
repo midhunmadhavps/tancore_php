@@ -95,7 +95,7 @@
                                 <div class="row pad-top-5 head-top-sec">
                                     <div class="col-md-12 col-sm-12 col-xs-12 text-center">
                                         <figure class="logo-box">
-                                            <a class="" href="index.html">
+                                            <a class="" id="homeClick">
                                                 <img alt="" src="assets/img/all/logo.svg"></a>
                                         </figure>
                                     </div>
@@ -106,11 +106,11 @@
                                 <div class="icons-section pad-top20 pull-right">
                                     <ul>
 
-                                        <li class="hidden-xs hover-mini-cart">
+                                        <!-- <li class="hidden-xs hover-mini-cart">
                                             <a href="cart.html" class="mini-cart-icon">
                                                 <i class=" fa fa-shopping-cart" aria-hidden="true"></i>
                                             </a>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                 </div>
                             </div>
